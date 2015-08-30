@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+    <channel>
+        <title>FuelWatch Prices For Leederville</title>
+        <ttl>720</ttl>
+        <link>http://www.fuelwatch.wa.gov.au</link>
+        <description>25/08/2015 - Leederville</description>
+        <language>en-us</language>
+        <copyright>Copyright 2005 FuelWatch. All Rights Reserved.</copyright>
+        <lastBuildDate>Tue Aug 25 15:26:36 WST 2015Tue Aug 25 15:26:36 WST 2015</lastBuildDate>
+        <image>
+            <url>/fuelwatch/art/fuelwatch-logo.gif</url>
+            <title>FuelWatch</title>
+            <link>http://www.fuelwatch.wa.gov.au</link>
+        </image>
+        <item>
+            <title>121.7: Vibe Charles St</title>
+            <description>Address: 427 Charles St, NORTH PERTH, Phone: (08) 9242 2379</description>
+            <brand>Vibe</brand>
+            <date>2015-08-25</date>
+            <price>121.7</price>
+            <trading-name>Vibe Charles St</trading-name>
+            <location>NORTH PERTH</location>
+            <address>427 Charles St</address>
+            <phone>(08) 9242 2379</phone>
+            <latitude>-31.922312</latitude>
+            <longitude>115.850264</longitude>
+            <site-features>,</site-features>
+        </item>
+        <item>
+            <title>139.9: Coles Express Mount Lawley</title>
+            <description>Address: Cnr Walcott St &amp; Fitzgerald St, NORTH PERTH, Phone: (08) 9444 8741</description>
+            <brand>Coles Express</brand>
+            <date>2015-08-25</date>
+            <price>139.9</price>
+            <trading-name>Coles Express Mount Lawley</trading-name>
+            <location>NORTH PERTH</location>
+            <address>Cnr Walcott St &amp; Fitzgerald St</address>
+            <phone>(08) 9444 8741</phone>
+            <latitude>-31.923821</latitude>
+            <longitude>115.859281</longitude>
+            <site-features>,</site-features>
+        </item>
+        <item>
+            <title>139.9: Gull North Perth</title>
+            <description>Address: 311 Fitzgerald St, NORTH PERTH, Phone: (08) 9228 0435, Site features: Conditional
+                Driveway Service
+            </description>
+            <brand>Gull</brand>
+            <date>2015-08-25</date>
+            <price>139.9</price>
+            <trading-name>Gull North Perth</trading-name>
+            <location>NORTH PERTH</location>
+            <address>311 Fitzgerald St</address>
+            <phone>(08) 9228 0435</phone>
+            <latitude>-31.936638</latitude>
+            <longitude>115.85796</longitude>
+            <site-features>Conditional Driveway Service,</site-features>
+        </item>
+        <item>
+            <title>142.9: Caltex StarMart Leederville</title>
+            <description>Address: 319 Vincent St, LEEDERVILLE, Phone: (08) 9242 3978</description>
+            <brand>Caltex</brand>
+            <date>2015-08-25</date>
+            <price>142.9</price>
+            <trading-name>Caltex StarMart Leederville</trading-name>
+            <location>LEEDERVILLE</location>
+            <address>319 Vincent St</address>
+            <phone>(08) 9242 3978</phone>
+            <latitude>-31.936816</latitude>
+            <longitude>115.840025</longitude>
+            <site-features>,</site-features>
+        </item>
+        <item>
+            <title>143.9: BP Connect North Perth</title>
+            <description>Address: Cnr Scarborough Beach Rd &amp; Charles St, NORTH PERTH, Phone: (08) 9443 4111
+            </description>
+            <brand>BP</brand>
+            <date>2015-08-25</date>
+            <price>143.9</price>
+            <trading-name>BP Connect North Perth</trading-name>
+            <location>NORTH PERTH</location>
+            <address>Cnr Scarborough Beach Rd &amp; Charles St</address>
+            <phone>(08) 9443 4111</phone>
+            <latitude>-31.926673</latitude>
+            <longitude>115.851901</longitude>
+            <site-features>,</site-features>
+        </item>
+        <item>
+            <title>144: Wesco North Perth</title>
+            <description>Address: 41 Angove St, NORTH PERTH, Phone: (08) 9328 3180, Site features: Full Driveway
+                Service
+            </description>
+            <brand>Wesco</brand>
+            <date>2015-08-25</date>
+            <price>144</price>
+            <trading-name>Wesco North Perth</trading-name>
+            <location>NORTH PERTH</location>
+            <address>41 Angove St</address>
+            <phone>(08) 9328 3180</phone>
+            <latitude>-31.930097</latitude>
+            <longitude>115.857554</longitude>
+            <site-features>Full Driveway Service,</site-features>
+        </item>
+    </channel>
+</rss>

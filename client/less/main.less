@@ -1,0 +1,37 @@
+@import "../bower_components/bootstrap/less/bootstrap.less";
+@import "bootswatch.less";
+@import "variables.less";
+@import (inline) "../bower_components/leaflet.markercluster/dist/MarkerCluster.css";
+@import (inline) "../bower_components/leaflet.markercluster/dist/MarkerCluster.Default.css";
+
+@view-height: 400px;
+@info-panel-width: 300px;
+
+#appMap {
+  height: @view-height;
+  margin-left: @info-panel-width;
+  padding-left: 1em;
+}
+
+.myHeader {
+  padding-left: 1em;
+}
+
+.navbar {
+  margin-bottom: 0px;
+}
+
+.address-input {
+    width: 20em;
+}
+
+#infoPanel {
+  float: left;
+  width: @info-panel-width;
+  height: @view-height;
+  overflow-y: scroll;
+}
+
+.questions span {
+  line-height: 2em;
+}
