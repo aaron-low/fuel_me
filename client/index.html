@@ -24,40 +24,43 @@
 <div ng-app="deviceApp">
 
     <div ng-controller="JourneyController">
-        <form ng-submit="goClicked()">
-            <div class="text-center questions">
-                <div>
-                    <div>Find me the cheapest fuel when driving from</div>
+        <div>
+            <form ng-submit="goClicked()">
+                <div class="text-center questions">
                     <div>
-                        <input class="address-input" type="text" ng-model="origin" required/>
-                        <span> to </span>
-                        <input class="address-input" type="text" ng-model="destination" required/>
-                    </div>
-                    <div>
-                        <span> within </span>
-                        <input type="number" ng-model="buffer" step="0.01" required/>
-                        <span> kms of my route</span>
-                    </div>
-
-                    <div>
-                        <button ng-click="goClicked()">Fuel me!</button>
+                        <div>Find me the cheapest fuel when driving from</div>
+                        <div>
+                            <input class="address-input" type="text" ng-model="origin" required/>
+                            <span> to </span>
+                            <input class="address-input" type="text" ng-model="destination" required/>
+                        </div>
+                        <div>
+                            <span> within </span>
+                            <input type="number" ng-model="buffer" step="0.01" required/>
+                            <span> kms of my route</span>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </form>
-        <div id="infoPanel" class="panel panel-default"">
-            <ul>
-                <li ng-repeat="p in prices | orderBy: 'price'">
-                    ${{ p.price }}
-                    <ul>
-                        <li>{{ p.fuelStation.name }}</li>
-                        <li>{{ p.fuelStation.address }}</li>
-                        <li>{{ p.fuelStation.suburb }}</li>
-                    </ul>
-                </li>
-            </ul>
+                <input type="submit"
+                       style="position: absolute; left: -9999px; width: 1px; height: 1px;"
+                       tabindex="-1"/>
+            </form>
         </div>
-        <div id="appMap" class="panel panel-default""></div>
+        <div id="columns-container">
+            <div id="infoPanel" class="panel panel-default">
+                <ul class="list-group">
+                    <li class="list-group-item" ng-repeat="p in journey.prices | orderBy: 'price'">
+                        <div class="station-price">
+                            {{ p.fuelStation.name }} - {{ p.price }} c/L
+                        </div>
+                        <div class="station-address">
+                            {{ p.fuelStation.address }}, {{ p.fuelStation.suburb }}
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div id="appMap" class="panel panel-default"></div>
+        </div>
     </div>
 </div>
 

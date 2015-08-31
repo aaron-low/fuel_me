@@ -65,10 +65,10 @@ describe('FuelFinderService', function () {
             var resMock = sinon.mock(res);
             resMock.expects('contentType').withArgs('json');
 
-            var expectedJson = JSON.stringify({
+            var expectedJson = JSON.stringify([{
                 line: { type: 'LineString', coordinates: [ [ 1, 2 ], [ 3, 4 ] ] },
                 prices: ['price1']
-            });
+            }]);
 
             resMock.expects('send').withArgs(expectedJson);
 

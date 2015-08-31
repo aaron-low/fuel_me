@@ -1,6 +1,7 @@
 window.$ = window.jQuery = require('jquery');
 var L = require('leaflet');
 var bootstrap = require('bootstrap');
+var jasny_bootstrap = require('jasny-bootstrap');
 window.L = L;
 
 var notifyjs = require('notifyjs');
@@ -50,3 +51,5 @@ $.notify.addStyle("bootstrap", {
 // app javascript entry point
 // Set leaflet image path
 L.Icon.Default.imagePath = 'bower_components/leaflet/dist/images';
+
+require('leaflet_marker_text');

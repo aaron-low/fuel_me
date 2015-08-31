@@ -7,12 +7,6 @@
 @view-height: 400px;
 @info-panel-width: 300px;
 
-#appMap {
-  height: @view-height;
-  margin-left: @info-panel-width;
-  padding-left: 1em;
-}
-
 .myHeader {
   padding-left: 1em;
 }
@@ -22,16 +16,43 @@
 }
 
 .address-input {
-    width: 20em;
-}
-
-#infoPanel {
-  float: left;
-  width: @info-panel-width;
-  height: @view-height;
-  overflow-y: scroll;
+  width: 20em;
 }
 
 .questions span {
-  line-height: 2em;
+  line-height: 3em;
+}
+
+.station-price {
+  font-weight: bold;
+}
+
+.station-address {
+
+}
+
+
+#appMap {
+  height: 300px;
+  padding-left: 1em;
+}
+
+#infoPanel {
+  height: 200px;
+  overflow-y: scroll;
+}
+
+/* MEDIA QUERIES */
+@media screen and (min-width: 740px ) {
+
+  #infoPanel {
+    height: @view-height;
+    float: left;
+    width: @info-panel-width;
+  }
+
+  #appMap {
+    height: @view-height;
+    margin-left: @info-panel-width;
+  }
 }

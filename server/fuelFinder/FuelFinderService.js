@@ -15,15 +15,17 @@ function FuelFinderService(fuelFinder, journeyFactory) {
         journeyFactory.createDirections(origin, destination)
             .then(function (lines) {
                 if (!_.isEmpty(lines)) {
+                    var result = [];
                     _(lines).forEach(function (lineString) {
                         var matchedPrices = fuelFinder.getPrices(lineString, bufferDegrees);
                         res.contentType('json');
-                        var result = {
+                        var journey = {
                             line: new jsts.io.GeoJSONWriter().write(lineString),
                             prices: matchedPrices
                         };
-                        res.send(JSON.stringify(result));
+                        result.push(journey);
                     }).value();
+                    res.send(JSON.stringify(result));
                 } else {
                     res.contentType('json');
                     res.send(JSON.stringify('Not a valid journey'));

@@ -69,13 +69,13 @@ gulp.task('bundle', function () {
     gulp.src('client/app.js')
         .pipe(browserify({
             shim: {
-                leaflet: {
-                    path: bower_src_dir + '/leaflet/dist/leaflet.js',
-                    exports: 'L'
-                },
                 leaflet_google: {
                     path: bower_src_dir + '/leaflet-plugins/layer/tile/Google.js',
                     exports: 'leaflet_google'
+                },
+                leaflet_marker_text: {
+                    path: bower_src_dir + '/leaflet-plugins/layer/Marker.Text.js',
+                    exports: 'leaflet_marker_text'
                 },
                 leaflet_markercluster: {
                     path: bower_src_dir + '/leaflet.markercluster/dist/leaflet.markercluster.js',

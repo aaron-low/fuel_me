@@ -3,43 +3,81 @@
 var L = require('leaflet');
 var _ = require('lodash');
 
-function MapView(map) {
+function MapView(map, fuelMeController) {
 
     var markerLayer = new L.FeatureGroup();
-    var geoJsonLayer = new L.geoJson();
+
+    function journeyFeatureClicked(e) {
+        console.log(e);
+        fuelMeController.selectJourney(e.target.feature.properties.journeyObject);
+    }
+
+    function onEachFeature(feature, layer) {
+        //bind click
+        layer.on({
+            click: journeyFeatureClicked
+        });
+    }
+
+    var geoJsonLayer = new L.geoJson([], {
+        onEachFeature: onEachFeature,
+        style: function (feature) {
+            if (feature.properties.journeyObject.selected) {
+                return {color: 'blue'};
+            } else {
+                return {color: 'grey'};
+            }
+        }
+    });
     map.addLayer(markerLayer);
     map.addLayer(geoJsonLayer);
 
-    this.drawOverlay = function(prices, lineGeoJson) {
+    this.refresh = function (fuelMeModel) {
+
+        var journeys = fuelMeModel.getJourneys();
+
         // Draw the markers in the model.
         // Can add smarts in to do diffs etc
         markerLayer.clearLayers();
         geoJsonLayer.clearLayers();
 
-        var feature = {
-            "type": 'Feature',
-            "properties": {
-                "name": "Your journey",
-                "popupContent": "There is your journey"
-            },
-            "geometry": lineGeoJson
-        };
-        geoJsonLayer.addData(feature);
+        _(journeys).forEach(function (journey) {
+            var feature = {
+                "type": 'Feature',
+                "properties": {
+                    "name": "Your journey",
+                    "popupContent": "There is your journey",
+                    "journeyObject": journey
+                },
+                "geometry": journey.line
+            };
+            geoJsonLayer.addData(feature);
 
-        _(prices).forEach(function(price) {
-            var s = price.fuelStation;
-            var latLng = L.latLng(s.lat, s.lng);
-            var m = new L.marker(latLng,
-                {
-                    draggable: false
-                }
-            );
-            markerLayer.addLayer(m);
+            _(journey.prices).forEach(function (price) {
+                var s = price.fuelStation;
+                var latLng = L.latLng(s.lat, s.lng);
+                var m = new L.Marker.Text(latLng,
+                    '' + price.price,
+                    {
+                        draggable: false
+                    }
+                );
+
+                var compiled = _.template('<div><b>${ name } - ${ price } c/L</b></div>' +
+                    '<div>${ address }</div><div>${ suburb }</div>');
+                m.bindPopup(compiled({
+                    name: price.fuelStation.name,
+                    price: price.price,
+                    address: price.fuelStation.address,
+                    suburb: price.fuelStation.suburb
+                }));
+                markerLayer.addLayer(m);
+            }).value();
         }).value();
 
         // no time out causes the map to freeze
-        setTimeout(function() {
-            map.fitBounds(markerLayer.getBounds());
+        setTimeout(function () {
+            map.fitBounds(geoJsonLayer.getBounds());
         }, 1000);
     };
 }

@@ -41,7 +41,8 @@ function JourneyFactory() {
             'origin': origin,
             'destination': destination,
             // travel mode defaults to driving
-            'units': 'metric'
+            'units': 'metric',
+            'alternatives': true
         }, function (error, result) {
             if (error) {
                 defer.reject(JSON.parse(error.message));
