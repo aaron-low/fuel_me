@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+    <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
     <!-- bower:css -->
     <!-- endbower -->
     <link type="text/css" rel="stylesheet" href="css/main.css"/>
@@ -17,7 +18,7 @@
 
 <div class="page-header myHeader">
     <h1>Fuel Me!
-        <small>Find me some fuel on the way to...</small>
+        <small>Cheap fuel in WA</small>
     </h1>
 </div>
 
@@ -28,22 +29,25 @@
             <form ng-submit="goClicked()">
                 <div class="text-center questions">
                     <div>
-                        <div>Find me the cheapest fuel when driving from</div>
                         <div>
-                            <input class="address-input" type="text" ng-model="origin" required/>
-                            <span> to </span>
-                            <input class="address-input" type="text" ng-model="destination" required/>
+                            <input class="user-input" type="text" ng-model="origin"
+                                   placeholder="I'm starting from ..." required/>
                         </div>
                         <div>
-                            <span> within </span>
-                            <input type="number" ng-model="buffer" step="0.01" required/>
-                            <span> kms of my route</span>
+                            <input class="user-input" type="text" ng-model="destination"
+                                   placeholder="And I'm driving to ..."
+                                   required/>
+                        </div>
+                        <div>
+                            <input class="user-input" type="number" ng-model="buffer"
+                                   placeholder="And I'm willing to stray this many kms" step="0.1"
+                                   required/>
+                        </div>
+                        <div>
+                            <input class="btn btn-primary user-input" type="submit" value="Show me the fuel!"/>
                         </div>
                     </div>
                 </div>
-                <input type="submit"
-                       style="position: absolute; left: -9999px; width: 1px; height: 1px;"
-                       tabindex="-1"/>
             </form>
         </div>
         <div id="columns-container">
@@ -66,5 +70,11 @@
 
 
 </body>
+<footer>
+    <span class="text-muted">Data provided by </span>
+    <a href="http://www.fuelwatch.wa.gov.au">
+        <image class="attribution-image" src="images/fuelwatch-logo.gif"/>
+    </a>
+</footer>
 
 </html>

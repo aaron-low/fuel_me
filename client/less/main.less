@@ -15,12 +15,12 @@
   margin-bottom: 0px;
 }
 
-.address-input {
-  width: 20em;
+.user-input {
+  width: 370px;
 }
 
-.questions span {
-  line-height: 3em;
+.questions div {
+  margin-bottom: 0.5em;
 }
 
 .station-price {
@@ -31,6 +31,13 @@
 
 }
 
+.attribution-image {
+  width: 60px;
+}
+
+footer {
+  text-align: center;
+}
 
 #appMap {
   height: 300px;
@@ -38,8 +45,29 @@
 }
 
 #infoPanel {
-  height: 200px;
+  height: 0px;
   overflow-y: scroll;
+  width: 0px;
+}
+
+/**
+placeholder styles
+**/
+
+::-webkit-input-placeholder {
+  text-align: center;
+}
+
+:-moz-placeholder { /* Firefox 18- */
+  text-align: center;
+}
+
+::-moz-placeholder {  /* Firefox 19+ */
+  text-align: center;
+}
+
+:-ms-input-placeholder {
+  text-align: center;
 }
 
 /* MEDIA QUERIES */

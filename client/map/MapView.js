@@ -8,7 +8,6 @@ function MapView(map, fuelMeController) {
     var markerLayer = new L.FeatureGroup();
 
     function journeyFeatureClicked(e) {
-        console.log(e);
         fuelMeController.selectJourney(e.target.feature.properties.journeyObject);
     }
 

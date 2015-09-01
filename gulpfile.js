@@ -38,7 +38,7 @@ var filePath = {
 
 // Imagemin images and ouput them in dist
 gulp.task('images', function () {
-    gulp.src('client/images/**/*.png')
+    gulp.src(['client/images/**/*.png', 'client/images/**/*.gif'], {base: 'client/images'})
         .pipe(imagemin())
         .pipe(gulp.dest('dist/images'));
 });
@@ -60,7 +60,7 @@ gulp.task('bower', function () {
 gulp.task("bower-files", function () {
     return gulp.src('./bower.json')
         .pipe(mainBowerFiles())
-    .pipe(gulp.dest(filePath.build.bowerDest));
+        .pipe(gulp.dest(filePath.build.bowerDest));
 });
 
 // Basic usage
@@ -84,7 +84,7 @@ gulp.task('bundle', function () {
             },
             transform: ['debowerify'],
             insertGlobals: true,
-            debug: !gulp.env.production
+            debug: false
         }))
         .pipe(rename('bundle.js'))
         .pipe(gulp.dest(filePath.build.dest));

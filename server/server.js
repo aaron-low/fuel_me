@@ -6,6 +6,9 @@ var app = express();
 var bodyParser = require('body-parser');
 var server = require('http').createServer(app);
 
+var compression = require('compression');
+app.use(compression());
+
 app.set('port', (process.env.PORT || 3000));
 
 app.use(express.static('dist'));
@@ -28,20 +31,37 @@ var JourneyFactory = require('./fuelFinder/JourneyFactory');
 var FuelFinder = require('./fuelFinder/FuelFinder');
 
 var FuelWatcher = require('./fuelwatch/FuelWatcher');
-var fs = require('fs');
 
-var fileReadStream = fs.createReadStream('./data/ULP_2015_08_26_fuelWatchRSS.xml');
-var fuelWatcher = new FuelWatcher(fileReadStream);
+// Test data
+// var fs = require('fs');
+// var fileReadStream = fs.createReadStream('./data/ULP_2015_08_26_fuelWatchRSS.xml');
 
-fuelWatcher.getPrices().then(function(prices){
-    var fuelFinder = new FuelFinder(prices, 1.0/60.0);
-    var journeyFactory = new JourneyFactory();
-    var fuelFinderService = new FuelFinderService(fuelFinder, journeyFactory);
+var request = require('request');
+var fuelWatchRSSRequest = request('http://www.fuelwatch.wa.gov.au/fuelwatch/fuelWatchRSS');
 
-    app.put('/findCheapFuel', fuelFinderService.findCheapFuel.bind(fuelFinderService));
-}).catch(function(error) {
-    throw new Error("Could not instantiate fuelwatch prices " + error.message);
+fuelWatchRSSRequest.on('error', function (error) {
+    // handle any request errors
 });
+fuelWatchRSSRequest.on('response', function (res) {
+    var stream = this;
+
+    if (res.statusCode !== 200) {
+        return this.emit('error', new Error('Bad status code'));
+    }
+
+    var fuelWatcher = new FuelWatcher(stream);
+    fuelWatcher.getPrices().then(function(prices){
+        var fuelFinder = new FuelFinder(prices, 1.0/60.0);
+        var journeyFactory = new JourneyFactory();
+        var fuelFinderService = new FuelFinderService(fuelFinder, journeyFactory);
+
+        app.put('/findCheapFuel', fuelFinderService.findCheapFuel.bind(fuelFinderService));
+    }).catch(function(error) {
+        throw new Error("Could not instantiate fuelwatch prices " + error.message);
+    });
+});
+
+
 
 
 

@@ -21,9 +21,9 @@ fuelMeApp.factory('fuelFinderWebService', ['$http', function ($http) {
 
 fuelMeApp.controller('JourneyController', ['$scope', 'fuelFinderWebService', function ($scope, fuelFinderWebService) {
 
-    $scope.origin = '113 Chelmsford road, north perth';
-    $scope.destination = '167 loftus street, leederville';
-    $scope.buffer = 0.5;
+    $scope.origin = '';
+    $scope.destination = '';
+    // $scope.buffer = 0.5;
 
     var mapDom = $('#appMap');
     var map = new MapFactory().createMap(mapDom[0]);
