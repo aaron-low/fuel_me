@@ -31,15 +31,21 @@ function MapView(map, fuelMeController) {
     map.addLayer(markerLayer);
     map.addLayer(geoJsonLayer);
 
-    var lowestPriceIcon = L.icon({
-        iconUrl: 'images/lowest_price_marker.png',
-        shadowUrl: 'images/price_marker_shadow.png',
-        iconSize:     [30, 42], // size of the icon
-        shadowSize:   [30, 42], // size of the shadow
-        iconAnchor:   [15, 21], // point of the icon which will correspond to marker's location
-        shadowAnchor: [7, 21],  // the same for the shadow
-        popupAnchor:  [-3, -30] // point from which the popup should open relative to the iconAnchor
-    });
+    function createMarker(iconUrl) {
+        return L.icon({
+            iconUrl: iconUrl,
+            shadowUrl: 'images/price_marker_shadow.png',
+            iconSize:     [30, 42], // size of the icon
+            shadowSize:   [49, 28], // size of the shadow
+            iconAnchor:   [15, 21], // point of the icon which will correspond to marker's location
+            shadowAnchor: [17, 7],  // the same for the shadow
+            popupAnchor:  [0, -30] // point from which the popup should open relative to the iconAnchor
+        });
+    }
+
+    var lowestPriceIcon = createMarker('images/lowest_price_marker.png');
+    var otherPriceIcon = createMarker('images/blue_marker.png');
+
 
     this.refresh = function (fuelMeModel) {
 
@@ -67,11 +73,9 @@ function MapView(map, fuelMeController) {
                 var latLng = L.latLng(s.lat, s.lng);
 
                 var markerOptions = {
-                    draggable: false
+                    draggable: false,
+                    icon: price.isLowest ? lowestPriceIcon : otherPriceIcon
                 };
-                if (price.isLowest) {
-                    markerOptions.icon = lowestPriceIcon;
-                }
 
                 var m = new L.Marker.Text(latLng,
                     '' + price.price,
