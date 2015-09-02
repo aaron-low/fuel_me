@@ -31,6 +31,16 @@ function MapView(map, fuelMeController) {
     map.addLayer(markerLayer);
     map.addLayer(geoJsonLayer);
 
+    var lowestPriceIcon = L.icon({
+        iconUrl: 'images/lowest_price_marker.png',
+        shadowUrl: 'images/price_marker_shadow.png',
+        iconSize:     [30, 42], // size of the icon
+        shadowSize:   [30, 42], // size of the shadow
+        iconAnchor:   [15, 21], // point of the icon which will correspond to marker's location
+        shadowAnchor: [7, 21],  // the same for the shadow
+        popupAnchor:  [-3, -30] // point from which the popup should open relative to the iconAnchor
+    });
+
     this.refresh = function (fuelMeModel) {
 
         var journeys = fuelMeModel.getJourneys();
@@ -55,11 +65,17 @@ function MapView(map, fuelMeController) {
             _(journey.prices).forEach(function (price) {
                 var s = price.fuelStation;
                 var latLng = L.latLng(s.lat, s.lng);
+
+                var markerOptions = {
+                    draggable: false
+                };
+                if (price.isLowest) {
+                    markerOptions.icon = lowestPriceIcon;
+                }
+
                 var m = new L.Marker.Text(latLng,
                     '' + price.price,
-                    {
-                        draggable: false
-                    }
+                    markerOptions
                 );
 
                 var compiled = _.template('<div><b>${ name } - ${ price } c/L</b></div>' +
