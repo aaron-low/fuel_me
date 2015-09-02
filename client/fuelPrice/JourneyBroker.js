@@ -14,8 +14,9 @@ function JourneyBroker(fuelFinderWebService) {
                     result.push(new Journey(thing.line, thing.prices));
                 }).value();
                 return result;
-            }).catch(function (error) {
-                return error;
+            }).catch(function () {
+                // return no journeys
+                return [];
             });
     };
 

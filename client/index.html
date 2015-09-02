@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
+    <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>
     <!-- bower:css -->
     <!-- endbower -->
     <link type="text/css" rel="stylesheet" href="css/main.css"/>
@@ -12,9 +12,7 @@
 <script src="http://maps.google.com/maps/api/js?v=3.2&sensor=false"></script>
 <!-- the browserified bundle -->
 <script src="bundle.js"></script>
-
 <!-- don't wiredep bower js as we use browserify -->
-
 
 <div class="page-header myHeader">
     <h1>Fuel Me!
@@ -39,9 +37,21 @@
                                    required/>
                         </div>
                         <div>
-                            <input class="user-input" type="number" ng-model="buffer"
-                                   placeholder="And I'm willing to stray this many kms" step="0.1"
-                                   required/>
+                            <span class="text-muted">How far are you willing to stray?</span>
+                        </div>
+                        <div class="btn-group" data-toggle="buttons">
+                            <label class="btn active btn-default" ng-click="buffer = 0">
+                                <input name="buffer" value="0" class="active" type="radio">Not at all
+                            </label>
+                            <label class="btn btn-default" ng-click="buffer = 0.2">
+                                <input name="buffer" value="0.2" type="radio">A little
+                            </label>
+                            <label class="btn btn-default" ng-click="buffer = 0.45">
+                                <input name="buffer" value="0.45" type="radio">A little more
+                            </label>
+                            <label class="btn btn-default" ng-click="buffer = 0.95">
+                                <input name="buffer" value="0.95" type="radio">A lot
+                            </label>
                         </div>
                         <div>
                             <input class="btn btn-primary user-input" type="submit" value="Show me the fuel!"/>
@@ -68,13 +78,17 @@
     </div>
 </div>
 
-
 </body>
-<footer>
-    <span class="text-muted">Data provided by </span>
-    <a href="http://www.fuelwatch.wa.gov.au">
-        <image class="attribution-image" src="images/fuelwatch-logo.gif"/>
-    </a>
+<footer class="text-muted">
+    <div>
+        <span>Data provided by </span>
+        <a href="http://www.fuelwatch.wa.gov.au">
+            <image class="attribution-image" src="images/fuelwatch-logo.gif"/>
+        </a>
+    </div>
+    <div>
+        Lovingly crafted by <a href="mailto:flowsoftworks@gmail.com" target="_top">Flow Softworks</a>
+    </div>
 </footer>
 
 </html>

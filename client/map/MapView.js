@@ -76,7 +76,15 @@ function MapView(map, fuelMeController) {
 
         // no time out causes the map to freeze
         setTimeout(function () {
-            map.fitBounds(geoJsonLayer.getBounds());
+            try {
+                var markerBounds = markerLayer.getBounds();
+                var journeyBounds = geoJsonLayer.getBounds();
+                markerBounds.extend(journeyBounds);
+                map.fitBounds(markerBounds);
+            } catch (e) {
+                // do nothing
+            }
+
         }, 1000);
     };
 }

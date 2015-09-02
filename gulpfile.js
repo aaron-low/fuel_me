@@ -11,9 +11,11 @@ var path = require('path');
 var server = require('gulp-express');
 var imagemin = require('gulp-imagemin');
 var mocha = require('gulp-mocha');
-
-
+var minifyCss = require('gulp-minify-css');
+var uglify = require('gulp-uglify');
 var wiredep = require('wiredep').stream;
+var del = require('del');
+var zip = require('gulp-zip');
 
 var bower_src_dir = 'client/bower_components';
 
@@ -36,9 +38,15 @@ var filePath = {
     }
 };
 
+gulp.task('clean', function () {
+    return del([
+        'dist'
+    ]);
+});
+
 // Imagemin images and ouput them in dist
 gulp.task('images', function () {
-    gulp.src(['client/images/**/*.png', 'client/images/**/*.gif'], {base: 'client/images'})
+    return gulp.src(['client/images/**/*.png', 'client/images/**/*.gif'], {base: 'client/images'})
         .pipe(imagemin())
         .pipe(gulp.dest('dist/images'));
 });
@@ -48,11 +56,12 @@ gulp.task('less', function () {
         .pipe(less({
             paths: [path.join(__dirname, 'less', 'includes')]
         }))
+        .pipe(minifyCss())
         .pipe(gulp.dest(filePath.build.css));
 });
 
 gulp.task('bower', function () {
-    gulp.src('./client/index.html')
+    return gulp.src('./client/index.html')
         .pipe(wiredep({}))
         .pipe(gulp.dest(filePath.build.dest));
 });
@@ -63,10 +72,9 @@ gulp.task("bower-files", function () {
         .pipe(gulp.dest(filePath.build.bowerDest));
 });
 
-// Basic usage
-gulp.task('bundle', function () {
+function bundle(prod) {
     // Single entry point to browserify
-    gulp.src('client/app.js')
+    var stream = gulp.src('client/app.js')
         .pipe(browserify({
             shim: {
                 leaflet_google: {
@@ -84,14 +92,26 @@ gulp.task('bundle', function () {
             },
             transform: ['debowerify'],
             insertGlobals: true,
-            debug: false
+            debug: !prod
         }))
-        .pipe(rename('bundle.js'))
-        .pipe(gulp.dest(filePath.build.dest));
+        .pipe(rename('bundle.js'));
+    if (prod) {
+        stream = stream.pipe(uglify());
+    }
+    return stream.pipe(gulp.dest(filePath.build.dest));
+}
+
+// Basic usage
+gulp.task('bundle-dev', function () {
+    return bundle(false);
+});
+
+gulp.task('bundle-prod', function () {
+    return bundle(true);
 });
 
 gulp.task('test-client', function () {
-    mochify('./client/**/*spec.js', {
+    return mochify('./client/**/*spec.js', {
         transform: 'debowerify',
         // reporter: 'tap',
         cover: false,
@@ -109,7 +129,7 @@ gulp.task('test-server', function () {
 
 
 gulp.task('watch', function () {
-    gulp.watch(['client/**/*.js', '!client/bower_components'], ['bundle']);
+    gulp.watch(['client/**/*.js', '!client/bower_components'], ['bundle-dev']);
     gulp.watch(['client/bower_components'], ['bower-files', 'bower']);
     gulp.watch('client/index.html', ['bower']);
     gulp.watch('client/**/*.less', ['less']);
@@ -118,12 +138,26 @@ gulp.task('watch', function () {
 });
 
 gulp.task('js-dev', function () {
-    runSequence('bower', 'bower-files', 'images', 'bundle', 'less', 'watch')
+    runSequence('bower', 'bower-files', 'images', 'bundle-dev', 'less', 'watch');
 });
 
 gulp.task('run-server', function () {
     // Start the server at the beginning of the task
     server.run(['server/server.js']);
+    return gulp.watch(['server/**/*.js'], server.run);
+});
 
-    gulp.watch(['server/**/*.js'], server.run);
+gulp.task('zip-artifact', function () {
+    return gulp.src([
+        'dist/**/*',
+        'server/**/*',
+        'package.json'
+    ], {base: "."})
+        .pipe(zip('fuel_me.zip'))
+        .pipe(gulp.dest('deploy'));
+
+});
+
+gulp.task('deploy', function () {
+    return runSequence('clean', 'bower', 'bower-files', 'images', 'bundle-prod', 'less', 'zip-artifact');
 });

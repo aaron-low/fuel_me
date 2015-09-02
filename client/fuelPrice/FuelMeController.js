@@ -1,7 +1,7 @@
 "use strict";
 
 
-function FuelMeController(fuelMeView, fuelMeModel, journeyBroker) {
+function FuelMeController(fuelMeModel, journeyBroker) {
 
     this.selectJourney = function(journey) {
         fuelMeModel.selectJourney(journey);
@@ -9,10 +9,8 @@ function FuelMeController(fuelMeView, fuelMeModel, journeyBroker) {
 
     this.findCheapFuel = function(origin, destination, buffer) {
         journeyBroker.findCheapFuel(origin, destination, buffer)
-            .then(function(journey) {
-                fuelMeModel.setJourneys(journey);
-            }).catch(function(error) {
-                fuelMeView.errorMsg(error);
+            .then(function(journeys) {
+                fuelMeModel.setJourneys(journeys);
             });
     };
 }

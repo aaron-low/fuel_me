@@ -3,6 +3,8 @@ var jsts = require('jsts');
 
 function FuelFinderService(fuelFinder, journeyFactory) {
 
+    var MINIMUM_BUFFER = 0.05;
+
     this.findCheapFuel = function (req, res) {
 
         var origin = req.body.origin;
@@ -10,7 +12,7 @@ function FuelFinderService(fuelFinder, journeyFactory) {
         var bufferKm = req.body.buffer;
 
         // should probably move this elsewhere...
-        var bufferDegrees = bufferKm / (1.85532 * 60);
+        var bufferDegrees = (bufferKm + MINIMUM_BUFFER) / (1.85532 * 60);
 
         journeyFactory.createDirections(origin, destination)
             .then(function (lines) {
@@ -27,6 +29,7 @@ function FuelFinderService(fuelFinder, journeyFactory) {
                     }).value();
                     res.send(JSON.stringify(result));
                 } else {
+                    res.status(400);
                     res.contentType('json');
                     res.send(JSON.stringify('Not a valid journey'));
                 }

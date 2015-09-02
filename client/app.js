@@ -21,23 +21,25 @@ fuelMeApp.factory('fuelFinderWebService', ['$http', function ($http) {
 
 fuelMeApp.controller('JourneyController', ['$scope', 'fuelFinderWebService', function ($scope, fuelFinderWebService) {
 
-    $scope.origin = '';
-    $scope.destination = '';
-    // $scope.buffer = 0.5;
+    $scope.origin = '113 Chelmsford road, north perth';
+    $scope.destination = '167 loftus street, leederville';
+    $scope.buffer = 0;
 
     var mapDom = $('#appMap');
     var map = new MapFactory().createMap(mapDom[0]);
 
     var journeyBroker = new JourneyBroker(fuelFinderWebService);
 
-    var fuelMeView = {
-        errorMsg: function(error) {
-            console.log(error);
-        }
-    };
-
     function FuelListView() {
         this.refresh = function(fuelMeModel) {
+
+            var journeys = fuelMeModel.getJourneys();
+            if (_.isEmpty(journeys)) {
+                $.notify("That was not a valid start and end point to your journey", "error");
+            } else {
+                $.notify("Fuel locations updated", "success");
+            }
+
             $scope.journey = fuelMeModel.getSelectedJourney();
             _.defer(function(){$scope.$apply();});
         };
@@ -45,7 +47,7 @@ fuelMeApp.controller('JourneyController', ['$scope', 'fuelFinderWebService', fun
 
     fuelMeModel.registerListener(new FuelListView());
 
-    var fuelMeController = new FuelMeController(fuelMeView, fuelMeModel, journeyBroker);
+    var fuelMeController = new FuelMeController(fuelMeModel, journeyBroker);
     var mapView = new MapView(map, fuelMeController);
     fuelMeModel.registerListener(mapView);
 

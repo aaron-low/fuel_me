@@ -13,19 +13,19 @@ describe('FuelFinderService', function () {
 
     describe('fuel price search', function () {
 
-        var fuelFinder = {
-            getPrices: function () {
-            }
-        };
-        var journeyFactory = {
-            // returns a promise
-            createDirections: function () {
-            }
-        };
+        var fuelFinder, journeyFactory;
 
+        beforeEach(function() {
+            fuelFinder = {
+                getPrices: function () {
+                }
+            };
 
-        beforeEach(function () {
-
+            journeyFactory = {
+                // returns a promise
+                createDirections: function () {
+                }
+            };
         });
 
         it('should get me some prices', function () {
@@ -42,7 +42,7 @@ describe('FuelFinderService', function () {
 
             var fuelFinderStub = sinon.stub(fuelFinder, 'getPrices', function () {
                 return ['price1'];
-            }).withArgs(lineString, 0.008983176307411479);
+            }).withArgs(lineString, 0.009432335122782054);
 
             var subject = new FuelFinderService(fuelFinder, journeyFactory);
 
@@ -82,5 +82,49 @@ describe('FuelFinderService', function () {
             });
         });
 
+        it('should give an error when there is no valid journey', function() {
+
+            var defer = Q.defer();
+
+            var journeyFactoryStub = sinon.stub(journeyFactory, 'createDirections', function () {
+                defer.resolve([]);
+                return defer.promise;
+            }).withArgs('origin', 'destination');
+
+            var subject = new FuelFinderService(fuelFinder, journeyFactory);
+
+            var req = {
+                body: {
+                    origin: 'origin',
+                    destination: 'destination',
+                    buffer: 1.0
+                }
+            };
+            var res = {
+                contentType: function () {
+                },
+                send: function () {
+                },
+                status: function () {
+                }
+            };
+
+            var resMock = sinon.mock(res);
+            resMock.expects('status').withArgs(400);
+            resMock.expects('contentType').withArgs('json');
+
+            var expectedJson = JSON.stringify('Not a valid journey');
+
+            resMock.expects('send').withArgs(expectedJson);
+
+            subject.findCheapFuel(req, res);
+
+            expect(journeyFactoryStub.called).to.be.true;
+
+            return defer.promise.then(function () {
+                resMock.verify();
+            });
+
+        });
     });
 });
