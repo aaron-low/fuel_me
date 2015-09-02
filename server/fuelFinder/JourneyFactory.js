@@ -7,6 +7,9 @@ var GeometryFactory = jsts.geom.GeometryFactory;
 
 function JourneyFactory() {
 
+    // Limit our search to western australia
+    var WESTERN_AUSTRALIA = ' western australia';
+
     var geometryFactory = new GeometryFactory();
 
     var CONFIG = {
@@ -38,8 +41,8 @@ function JourneyFactory() {
         var defer = Q.defer();
 
         gmAPI.directions({
-            'origin': origin,
-            'destination': destination,
+            'origin': origin + WESTERN_AUSTRALIA,
+            'destination': destination + WESTERN_AUSTRALIA,
             // travel mode defaults to driving
             'units': 'metric',
             'alternatives': true
