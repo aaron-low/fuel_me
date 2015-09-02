@@ -18,13 +18,21 @@ function MapView(map, fuelMeController) {
         });
     }
 
+    var LINE_WEIGHT = 10;
+
     var geoJsonLayer = new L.geoJson([], {
         onEachFeature: onEachFeature,
         style: function (feature) {
             if (feature.properties.journeyObject.selected) {
-                return {color: 'blue'};
+                return {
+                    color: 'blue',
+                    weight: LINE_WEIGHT
+                };
             } else {
-                return {color: 'grey'};
+                return {
+                    color: 'grey',
+                    weight: LINE_WEIGHT
+                };
             }
         }
     });
@@ -35,11 +43,11 @@ function MapView(map, fuelMeController) {
         return L.icon({
             iconUrl: iconUrl,
             shadowUrl: 'images/price_marker_shadow.png',
-            iconSize:     [30, 42], // size of the icon
-            shadowSize:   [49, 28], // size of the shadow
-            iconAnchor:   [15, 21], // point of the icon which will correspond to marker's location
+            iconSize: [30, 42], // size of the icon
+            shadowSize: [49, 28], // size of the shadow
+            iconAnchor: [15, 21], // point of the icon which will correspond to marker's location
             shadowAnchor: [17, 7],  // the same for the shadow
-            popupAnchor:  [0, -30] // point from which the popup should open relative to the iconAnchor
+            popupAnchor: [0, -30] // point from which the popup should open relative to the iconAnchor
         });
     }
 
