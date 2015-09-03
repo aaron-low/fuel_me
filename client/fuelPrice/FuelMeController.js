@@ -3,6 +3,10 @@ var _ = require('lodash');
 
 function FuelMeController(fuelMeModel, journeyBroker) {
 
+    this.selectPrice = function(price) {
+        fuelMeModel.selectPrice(price);
+    };
+
     this.selectJourney = function(journey) {
         fuelMeModel.selectJourney(journey);
     };

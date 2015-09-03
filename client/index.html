@@ -63,7 +63,9 @@
         <div id="columns-container">
             <div id="infoPanel" class="panel panel-default">
                 <ul class="list-group">
-                    <li class="list-group-item" ng-repeat="p in journey.prices | orderBy: 'price'">
+                    <li class="list-group-item price-item" ng-repeat="p in journey.prices | orderBy: 'price'"
+                        ng-click="selectPrice(p)"
+                            >
                         <div class="station-price">
                             {{ p.fuelStation.name }} - {{ p.price }} c/L
                         </div>

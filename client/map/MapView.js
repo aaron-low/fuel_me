@@ -98,6 +98,9 @@ function MapView(map, fuelMeController) {
                     suburb: price.fuelStation.suburb
                 }));
                 markerLayer.addLayer(m);
+                if (price === fuelMeModel.selectedPrice) {
+                    m.openPopup();
+                }
             }).value();
         }).value();
     };
@@ -125,6 +128,10 @@ function MapView(map, fuelMeController) {
         drawJourney(fuelMeModel);
         drawPrices(fuelMeModel);
         fitMapToFeatures();
+    };
+
+    this.priceSelected = function(fuelMeModel) {
+        drawPrices(fuelMeModel);
     };
 }
 

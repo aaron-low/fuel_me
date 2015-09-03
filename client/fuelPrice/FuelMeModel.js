@@ -24,9 +24,16 @@ function FuelMeModel() {
         }).value();
     };
 
+    var notifyListenersPriceSelected = function() {
+        _(listeners).forEach(function(l) {
+            l.priceSelected(self);
+        }).value();
+    };
+
     var journeys = null;
 
     this.setJourneys = function(journeyArray) {
+        this.selectedPrice = null;
         if (!_.isEmpty(journeyArray)) {
             journeyArray[0].selected = true;
         }
@@ -36,6 +43,11 @@ function FuelMeModel() {
 
     this.getJourneys = function() {
         return journeys;
+    };
+
+    this.selectPrice = function(price) {
+        this.selectedPrice = price;
+        notifyListenersPriceSelected();
     };
 
     this.selectJourney = function(journey) {

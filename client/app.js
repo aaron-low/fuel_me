@@ -30,7 +30,13 @@ fuelMeApp.controller('JourneyController', ['$scope', 'fuelFinderWebService', fun
 
     var journeyBroker = new JourneyBroker(fuelFinderWebService);
 
-    function FuelListView() {
+    function FuelListView(angularScope) {
+
+        var updateSidePanel = function(fuelMeModel) {
+            angularScope.journey = fuelMeModel.getSelectedJourney();
+            _.defer(function(){angularScope.$apply();});
+        };
+
         this.pricesUpdated = function(fuelMeModel) {
             var journeys = fuelMeModel.getJourneys();
             if (_.isEmpty(journeys)) {
@@ -38,15 +44,19 @@ fuelMeApp.controller('JourneyController', ['$scope', 'fuelFinderWebService', fun
             } else {
                 $.notify("Fuel locations updated", "success");
             }
+            updateSidePanel(fuelMeModel);
         };
 
         this.journeyUpdated = function(fuelMeModel) {
-            $scope.journey = fuelMeModel.getSelectedJourney();
-            _.defer(function(){$scope.$apply();});
+            updateSidePanel(fuelMeModel);
+        };
+
+        this.priceSelected = function(fuelMeModel) {
+
         };
     }
 
-    fuelMeModel.registerListener(new FuelListView());
+    fuelMeModel.registerListener(new FuelListView($scope));
 
     var fuelMeController = new FuelMeController(fuelMeModel, journeyBroker);
     var mapView = new MapView(map, fuelMeController);
@@ -54,6 +64,10 @@ fuelMeApp.controller('JourneyController', ['$scope', 'fuelFinderWebService', fun
 
     $scope.goClicked = function () {
         fuelMeController.findCheapFuel($scope.origin, $scope.destination, $scope.buffer);
+    };
+
+    $scope.selectPrice = function(price) {
+        fuelMeController.selectPrice(price);
     };
 }]);
 
