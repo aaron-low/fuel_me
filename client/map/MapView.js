@@ -54,16 +54,9 @@ function MapView(map, fuelMeController) {
     var lowestPriceIcon = createMarker('images/lowest_price_marker.png');
     var otherPriceIcon = createMarker('images/blue_marker.png');
 
-
-    this.refresh = function (fuelMeModel) {
-
-        var journeys = fuelMeModel.getJourneys();
-
-        // Draw the markers in the model.
-        // Can add smarts in to do diffs etc
-        markerLayer.clearLayers();
+    var drawJourney = function(fuelMeModel) {
         geoJsonLayer.clearLayers();
-
+        var journeys = fuelMeModel.getJourneys();
         _(journeys).forEach(function (journey) {
             var feature = {
                 "type": 'Feature',
@@ -75,7 +68,13 @@ function MapView(map, fuelMeController) {
                 "geometry": journey.line
             };
             geoJsonLayer.addData(feature);
+        }).value();
+    };
 
+    var drawPrices = function(fuelMeModel) {
+        markerLayer.clearLayers();
+        var journeys = fuelMeModel.getJourneys();
+        _(journeys).forEach(function (journey) {
             _(journey.prices).forEach(function (price) {
                 var s = price.fuelStation;
                 var latLng = L.latLng(s.lat, s.lng);
@@ -101,7 +100,9 @@ function MapView(map, fuelMeController) {
                 markerLayer.addLayer(m);
             }).value();
         }).value();
+    };
 
+    var fitMapToFeatures = function() {
         // no time out causes the map to freeze
         setTimeout(function () {
             try {
@@ -114,6 +115,16 @@ function MapView(map, fuelMeController) {
             }
 
         }, 1000);
+    };
+
+    this.journeyUpdated = function(fuelMeModel) {
+        drawJourney(fuelMeModel);
+    };
+
+    this.pricesUpdated = function (fuelMeModel) {
+        drawJourney(fuelMeModel);
+        drawPrices(fuelMeModel);
+        fitMapToFeatures();
     };
 }
 

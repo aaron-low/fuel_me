@@ -12,9 +12,15 @@ function FuelMeModel() {
         listeners.push(l);
     };
 
-    var notifyListeners = function() {
+    var notifyListenersPricesUpdated = function() {
         _(listeners).forEach(function(l) {
-            l.refresh(self);
+            l.pricesUpdated(self);
+        }).value();
+    };
+
+    var notifyListenersJourneyUpdated = function() {
+        _(listeners).forEach(function(l) {
+            l.journeyUpdated(self);
         }).value();
     };
 
@@ -25,7 +31,7 @@ function FuelMeModel() {
             journeyArray[0].selected = true;
         }
         journeys = journeyArray;
-        notifyListeners();
+        notifyListenersPricesUpdated();
     };
 
     this.getJourneys = function() {
@@ -40,7 +46,7 @@ function FuelMeModel() {
                 j.selected = false;
             }
         }).value();
-        notifyListeners();
+        notifyListenersJourneyUpdated();
     };
 
     this.getSelectedJourney = function() {

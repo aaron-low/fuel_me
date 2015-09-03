@@ -31,15 +31,16 @@ fuelMeApp.controller('JourneyController', ['$scope', 'fuelFinderWebService', fun
     var journeyBroker = new JourneyBroker(fuelFinderWebService);
 
     function FuelListView() {
-        this.refresh = function(fuelMeModel) {
-
+        this.pricesUpdated = function(fuelMeModel) {
             var journeys = fuelMeModel.getJourneys();
             if (_.isEmpty(journeys)) {
-                $.notify("That was not a valid start and end point to your journey", "error");
+                $.notify("That was not a valid journey", "error");
             } else {
                 $.notify("Fuel locations updated", "success");
             }
+        };
 
+        this.journeyUpdated = function(fuelMeModel) {
             $scope.journey = fuelMeModel.getSelectedJourney();
             _.defer(function(){$scope.$apply();});
         };

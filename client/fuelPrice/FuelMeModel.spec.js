@@ -11,13 +11,13 @@ describe('FuelMeModel', function () {
 
     it('should notify listeners', function() {
         var listener = {
-            refresh: function() {}
+            pricesUpdated: function() {}
         };
 
         var fuelMeModel = new FuelMeModel();
 
         var listenerMock = sinon.mock(listener);
-        listenerMock.expects('refresh').withArgs(fuelMeModel);
+        listenerMock.expects('pricesUpdated').withArgs(fuelMeModel);
 
 
         fuelMeModel.registerListener(listener);
@@ -27,7 +27,7 @@ describe('FuelMeModel', function () {
             prices: []
         };
 
-        fuelMeModel.setJourneys(journey);
+        fuelMeModel.setJourneys([journey]);
 
         listenerMock.verify();
     });

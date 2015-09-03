@@ -24,7 +24,7 @@ describe('JourneyBroker', function () {
         var deferred = Q.defer();
         deferred.resolve([{
             line: 'line',
-            prices: 'prices'
+            prices: [{ price: 123 }]
         }]);
 
         fuelFinderWebServiceMock.expects('findCheapFuel')
@@ -34,7 +34,8 @@ describe('JourneyBroker', function () {
 
         return subject.findCheapFuel('origin', 'destination', 12).then(function(journeys) {
             expect(journeys[0].line).to.equal('line');
-            expect(journeys[0].prices).to.equal('prices');
+            expect(journeys[0].prices[0].price).to.equal(123);
+            expect(journeys[0].prices[0].isLowest).to.equal(true);
             fuelFinderWebServiceMock.verify();
         });
     });
@@ -51,8 +52,8 @@ describe('JourneyBroker', function () {
 
         var subject = new JourneyBroker(fuelFinderWebService);
 
-        return subject.findCheapFuel('origin', 'destination', 12).catch(function(error) {
-            expect(error).to.equal('error occured');
+        return subject.findCheapFuel('origin', 'destination', 12).then(function(data) {
+            expect(data.length).to.equal(0);
         });
     });
 });

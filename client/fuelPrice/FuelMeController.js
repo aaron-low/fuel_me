@@ -1,5 +1,5 @@
 "use strict";
-
+var _ = require('lodash');
 
 function FuelMeController(fuelMeModel, journeyBroker) {
 
