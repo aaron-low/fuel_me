@@ -39,22 +39,18 @@ function MapView(map, fuelMeController) {
     map.addLayer(markerLayer);
     map.addLayer(geoJsonLayer);
 
-    function createMarker(iconUrl) {
-        return L.icon({
-            iconUrl: iconUrl,
+    function createMarker(className, text) {
+        return L.divIcon({
             shadowUrl: 'images/price_marker_shadow.png',
-            iconSize: [30, 42], // size of the icon
-            shadowSize: [49, 28], // size of the shadow
-            iconAnchor: [15, 21], // point of the icon which will correspond to marker's location
-            shadowAnchor: [17, 7],  // the same for the shadow
-            popupAnchor: [0, -30] // point from which the popup should open relative to the iconAnchor
+            iconSize: [49, 42], // size of the icon
+            iconAnchor: [15, 42], // point of the icon which will correspond to marker's location
+            popupAnchor: [0, -30], // point from which the popup should open relative to the iconAnchor
+            html: '<div class="price-icon"><div class="price-marker">'+text+'</div><div class="price-shadow"></div></div>',
+            className: className
         });
     }
 
-    var lowestPriceIcon = createMarker('images/lowest_price_marker.png');
-    var otherPriceIcon = createMarker('images/blue_marker.png');
-
-    var drawJourney = function(fuelMeModel) {
+    var drawJourney = function (fuelMeModel) {
         geoJsonLayer.clearLayers();
         var journeys = fuelMeModel.getJourneys();
         _(journeys).forEach(function (journey) {
@@ -71,7 +67,7 @@ function MapView(map, fuelMeController) {
         }).value();
     };
 
-    var drawPrices = function(fuelMeModel) {
+    var drawPrices = function (fuelMeModel) {
         markerLayer.clearLayers();
         var journeys = fuelMeModel.getJourneys();
         _(journeys).forEach(function (journey) {
@@ -79,13 +75,15 @@ function MapView(map, fuelMeController) {
                 var s = price.fuelStation;
                 var latLng = L.latLng(s.lat, s.lng);
 
+
+                var iconClassName = price.isLowest ? 'lowest-price-icon' : 'normal-price-icon';
                 var markerOptions = {
                     draggable: false,
-                    icon: price.isLowest ? lowestPriceIcon : otherPriceIcon
+                    icon: createMarker(iconClassName, price.price)
                 };
 
-                var m = new L.Marker.Text(latLng,
-                    '' + price.price,
+                var m = new L.Marker(
+                    latLng,
                     markerOptions
                 );
 
@@ -105,7 +103,7 @@ function MapView(map, fuelMeController) {
         }).value();
     };
 
-    var fitMapToFeatures = function() {
+    var fitMapToFeatures = function () {
         // no time out causes the map to freeze
         setTimeout(function () {
             try {
@@ -120,7 +118,7 @@ function MapView(map, fuelMeController) {
         }, 1000);
     };
 
-    this.journeyUpdated = function(fuelMeModel) {
+    this.journeyUpdated = function (fuelMeModel) {
         drawJourney(fuelMeModel);
     };
 
@@ -130,7 +128,7 @@ function MapView(map, fuelMeController) {
         fitMapToFeatures();
     };
 
-    this.priceSelected = function(fuelMeModel) {
+    this.priceSelected = function (fuelMeModel) {
         drawPrices(fuelMeModel);
     };
 }

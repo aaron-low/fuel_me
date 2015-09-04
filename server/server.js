@@ -56,6 +56,8 @@ fuelWatchRSSRequest.on('response', function (res) {
         var fuelFinderService = new FuelFinderService(fuelFinder, journeyFactory);
 
         app.put('/findCheapFuel', fuelFinderService.findCheapFuel.bind(fuelFinderService));
+
+        console.log('findCheapFuel service now running');
     }).catch(function(error) {
         throw new Error("Could not instantiate fuelwatch prices " + error.message);
     });
