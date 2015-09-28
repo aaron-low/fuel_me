@@ -1,0 +1,35 @@
+<form ng-controller="findFuelController" ng-submit="goClicked()">
+    <div class="text-center questions">
+        <div>
+            <div>
+                <input class="user-input" type="text" ng-model="origin"
+                       placeholder="I'm starting from ..." required/>
+            </div>
+            <div>
+                <input class="user-input" type="text" ng-model="destination"
+                       placeholder="And I'm driving to ..."
+                       required/>
+            </div>
+            <div>
+                <span class="text-muted">How far are you willing to stray?</span>
+            </div>
+            <div class="btn-group" data-toggle="buttons">
+                <label class="btn active btn-default" ng-click="buffer = 0">
+                    <input name="buffer" value="0" class="active" type="radio">Not at all
+                </label>
+                <label class="btn btn-default" ng-click="buffer = 0.2">
+                    <input name="buffer" value="0.2" type="radio">A little
+                </label>
+                <label class="btn btn-default" ng-click="buffer = 0.45">
+                    <input name="buffer" value="0.45" type="radio">A little more
+                </label>
+                <label class="btn btn-default" ng-click="buffer = 0.95">
+                    <input name="buffer" value="0.95" type="radio">A lot
+                </label>
+            </div>
+            <div>
+                <input class="btn btn-primary user-input" type="submit" value="Show me the fuel!"/>
+            </div>
+        </div>
+    </div>
+</form>

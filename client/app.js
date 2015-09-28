@@ -1,74 +1,30 @@
 "use strict";
 
 require('./shim');
-var _ = require('lodash');
 var angular = require('angular');
-var FuelFinderWebService = require('./FuelFinder/FuelFinderWebService');
-var MapFactory = require('./map/MapFactory');
-var MapView = require('./map/MapView');
+var FuelFinderWebService = require('./fuel_finder/fuel_finder_web_service');
+var MapFactory = require('./map/map_factory');
 var $ = require('jquery');
-var FuelMeModel = require('./fuelPrice/FuelMeModel');
-var FuelMeController = require('./fuelPrice/FuelMeController');
-var JourneyBroker = require('./fuelPrice/JourneyBroker');
 
-var fuelMeApp = angular.module('deviceApp', []);
+var fuelMeApp = angular.module('fuelMeApp', []);
 
-var fuelMeModel = new FuelMeModel();
+// fuelMeApp.directive('helloWorld', require('./directive/hello_world'));
+fuelMeApp.service('fuelMeModel', require('./fuel_price/fuel_me_model'));
 
 fuelMeApp.factory('fuelFinderWebService', ['$http', function ($http) {
     return new FuelFinderWebService($http);
 }]);
 
-fuelMeApp.controller('JourneyController', ['$scope', 'fuelFinderWebService', function ($scope, fuelFinderWebService) {
-
-    $scope.origin = '';
-    $scope.destination = '';
-    $scope.buffer = 0;
-
+fuelMeApp.factory('fuelMeMap', function() {
     var mapDom = $('#appMap');
-    var map = new MapFactory().createMap(mapDom[0]);
+    return new MapFactory().createMap(mapDom[0]);
+});
 
-    var journeyBroker = new JourneyBroker(fuelFinderWebService);
-
-    function FuelListView(angularScope) {
-
-        var updateSidePanel = function(fuelMeModel) {
-            angularScope.journey = fuelMeModel.getSelectedJourney();
-            _.defer(function(){angularScope.$apply();});
-        };
-
-        this.pricesUpdated = function(fuelMeModel) {
-            var journeys = fuelMeModel.getJourneys();
-            if (_.isEmpty(journeys)) {
-                $.notify("That was not a valid journey", "error");
-            } else {
-                $.notify("Fuel locations updated", "success");
-            }
-            updateSidePanel(fuelMeModel);
-        };
-
-        this.journeyUpdated = function(fuelMeModel) {
-            updateSidePanel(fuelMeModel);
-        };
-
-        this.priceSelected = function(fuelMeModel) {
-
-        };
-    }
-
-    fuelMeModel.registerListener(new FuelListView($scope));
-
-    var fuelMeController = new FuelMeController(fuelMeModel, journeyBroker);
-    var mapView = new MapView(map, fuelMeController);
-    fuelMeModel.registerListener(mapView);
-
-    $scope.goClicked = function () {
-        fuelMeController.findCheapFuel($scope.origin, $scope.destination, $scope.buffer);
-    };
-
-    $scope.selectPrice = function(price) {
-        fuelMeController.selectPrice(price);
-    };
-}]);
+fuelMeApp.service('mapView', require('./map/map_view'));
+fuelMeApp.service('journeyBroker', require('./fuel_price/journey_broker'));
+fuelMeApp.service('fuelMeController', require('./fuel_price/fuel_me_controller'));
+fuelMeApp.controller('findFuelController', require('./fuel_finder/find_fuel_controller'));
+fuelMeApp.controller('fuelListController', require('./fuel_price/fuel_list_controller'));
+fuelMeApp.controller('mapController', require('./map/map_controller'));
 
 module.exports = fuelMeApp;

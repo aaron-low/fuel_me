@@ -2,7 +2,7 @@
 
 var _ = require('lodash');
 
-var Journey = require('./Journey');
+var Journey = require('./journey');
 
 function JourneyBroker(fuelFinderWebService) {
 
@@ -22,5 +22,7 @@ function JourneyBroker(fuelFinderWebService) {
     };
 
 }
+
+JourneyBroker.$inject = ['fuelFinderWebService'];
 
 module.exports = JourneyBroker;

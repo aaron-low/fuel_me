@@ -4,7 +4,7 @@ var chai = require('chai');
 chai.config.includeStack = true;
 var sinon = require('sinon');
 
-var FuelFinderWebService = require('./FuelFinderWebService');
+var FuelFinderWebService = require('./fuel_finder_web_service');
 
 describe('FuelFinderWebService', function () {
     it('should fill out params', function () {

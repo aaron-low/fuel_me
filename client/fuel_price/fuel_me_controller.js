@@ -1,5 +1,4 @@
 "use strict";
-var _ = require('lodash');
 
 function FuelMeController(fuelMeModel, journeyBroker) {
 
@@ -18,5 +17,7 @@ function FuelMeController(fuelMeModel, journeyBroker) {
             });
     };
 }
+
+FuelMeController.$inject = ['fuelMeModel', 'journeyBroker'];
 
 module.exports = FuelMeController;

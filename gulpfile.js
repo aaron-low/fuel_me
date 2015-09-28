@@ -23,7 +23,8 @@ var filePath = {
     build: {
         dest: './dist',
         bowerDest: './dist/bower_components',
-        css: './dist/css'
+        css: './dist/css',
+        templatesDest: './dist/templates'
     },
     browserify: {
         src: './client/app.js',
@@ -64,6 +65,11 @@ gulp.task('bower', function () {
     return gulp.src('./client/index.html')
         .pipe(wiredep({}))
         .pipe(gulp.dest(filePath.build.dest));
+});
+
+gulp.task('copy-templates', function() {
+    return gulp.src('./client/templates/**/*.*')
+        .pipe(gulp.dest(filePath.build.templatesDest));
 });
 
 gulp.task("bower-files", function () {
@@ -138,7 +144,7 @@ gulp.task('watch', function () {
 });
 
 gulp.task('js-dev', function () {
-    runSequence('bower', 'bower-files', 'images', 'bundle-dev', 'less', 'watch');
+    runSequence('bower', 'bower-files', 'copy-templates', 'images', 'bundle-dev', 'less', 'watch');
 });
 
 gulp.task('run-server', function () {
@@ -159,5 +165,5 @@ gulp.task('zip-artifact', function () {
 });
 
 gulp.task('deploy', function () {
-    return runSequence('clean', 'bower', 'bower-files', 'images', 'bundle-prod', 'less', 'zip-artifact');
+    return runSequence('clean', 'bower', 'bower-files', 'copy-templates', 'images', 'bundle-prod', 'less', 'zip-artifact');
 });

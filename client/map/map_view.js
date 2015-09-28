@@ -70,35 +70,43 @@ function MapView(map, fuelMeController) {
     var drawPrices = function (fuelMeModel) {
         markerLayer.clearLayers();
         var journeys = fuelMeModel.getJourneys();
+
+        var drawnPrices = [];
         _(journeys).forEach(function (journey) {
             _(journey.prices).forEach(function (price) {
-                var s = price.fuelStation;
-                var latLng = L.latLng(s.lat, s.lng);
+
+                if (!_.contains(drawnPrices, price)) {
+                    drawnPrices.push(price);
+
+                    var s = price.fuelStation;
+                    var latLng = L.latLng(s.lat, s.lng);
 
 
-                var iconClassName = price.isLowest ? 'lowest-price-icon' : 'normal-price-icon';
-                var markerOptions = {
-                    draggable: false,
-                    icon: createMarker(iconClassName, price.price)
-                };
+                    var iconClassName = price.isLowest ? 'lowest-price-icon' : 'normal-price-icon';
+                    var markerOptions = {
+                        draggable: false,
+                        icon: createMarker(iconClassName, price.price)
+                    };
 
-                var m = new L.Marker(
-                    latLng,
-                    markerOptions
-                );
+                    var m = new L.Marker(
+                        latLng,
+                        markerOptions
+                    );
 
-                var compiled = _.template('<div><b>${ name } - ${ price } c/L</b></div>' +
-                    '<div>${ address }</div><div>${ suburb }</div>');
-                m.bindPopup(compiled({
-                    name: price.fuelStation.name,
-                    price: price.price,
-                    address: price.fuelStation.address,
-                    suburb: price.fuelStation.suburb
-                }));
-                markerLayer.addLayer(m);
-                if (price === fuelMeModel.selectedPrice) {
-                    m.openPopup();
+                    var compiled = _.template('<div><b>${ name } - ${ price } c/L</b></div>' +
+                        '<div>${ address }</div><div>${ suburb }</div>');
+                    m.bindPopup(compiled({
+                        name: price.fuelStation.name,
+                        price: price.price,
+                        address: price.fuelStation.address,
+                        suburb: price.fuelStation.suburb
+                    }));
+                    markerLayer.addLayer(m);
+                    if (price === fuelMeModel.selectedPrice) {
+                        m.openPopup();
+                    }
                 }
+
             }).value();
         }).value();
     };
@@ -132,5 +140,7 @@ function MapView(map, fuelMeController) {
         drawPrices(fuelMeModel);
     };
 }
+
+MapView.$inject = ['fuelMeMap', 'fuelMeController', 'fuelMeModel'];
 
 module.exports = MapView;

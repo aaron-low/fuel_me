@@ -5,7 +5,7 @@ chai.config.includeStack = true;
 var expect = chai.expect;
 var sinon = require('sinon');
 
-var FuelMeModel = require('./FuelMeModel');
+var FuelMeModel = require('./fuel_me_model');
 
 describe('FuelMeModel', function () {
 

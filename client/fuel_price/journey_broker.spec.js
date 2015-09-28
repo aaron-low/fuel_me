@@ -6,7 +6,7 @@ var expect = chai.expect;
 var sinon = require('sinon');
 var Q = require('q');
 
-var JourneyBroker = require('./JourneyBroker');
+var JourneyBroker = require('./journey_broker');
 
 describe('JourneyBroker', function () {
 

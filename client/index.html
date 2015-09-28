@@ -20,48 +20,14 @@
     </h1>
 </div>
 
-<div ng-app="deviceApp">
-
-    <div ng-controller="JourneyController">
+<div ng-app="fuelMeApp">
+    <div data-hello-world></div>
+    <div>
         <div>
-            <form ng-submit="goClicked()">
-                <div class="text-center questions">
-                    <div>
-                        <div>
-                            <input class="user-input" type="text" ng-model="origin"
-                                   placeholder="I'm starting from ..." required/>
-                        </div>
-                        <div>
-                            <input class="user-input" type="text" ng-model="destination"
-                                   placeholder="And I'm driving to ..."
-                                   required/>
-                        </div>
-                        <div>
-                            <span class="text-muted">How far are you willing to stray?</span>
-                        </div>
-                        <div class="btn-group" data-toggle="buttons">
-                            <label class="btn active btn-default" ng-click="buffer = 0">
-                                <input name="buffer" value="0" class="active" type="radio">Not at all
-                            </label>
-                            <label class="btn btn-default" ng-click="buffer = 0.2">
-                                <input name="buffer" value="0.2" type="radio">A little
-                            </label>
-                            <label class="btn btn-default" ng-click="buffer = 0.45">
-                                <input name="buffer" value="0.45" type="radio">A little more
-                            </label>
-                            <label class="btn btn-default" ng-click="buffer = 0.95">
-                                <input name="buffer" value="0.95" type="radio">A lot
-                            </label>
-                        </div>
-                        <div>
-                            <input class="btn btn-primary user-input" type="submit" value="Show me the fuel!"/>
-                        </div>
-                    </div>
-                </div>
-            </form>
+            <ng-include src="'templates/form.html'"></ng-include>
         </div>
         <div id="columns-container">
-            <div id="infoPanel" class="panel panel-default">
+            <div ng-controller="fuelListController" id="infoPanel" class="panel panel-default">
                 <ul class="list-group">
                     <li class="list-group-item price-item" ng-repeat="p in journey.prices | orderBy: 'price'"
                         ng-click="selectPrice(p)"
@@ -75,7 +41,7 @@
                     </li>
                 </ul>
             </div>
-            <div id="appMap" class="panel panel-default"></div>
+            <div ng-controller="mapController" id="appMap" class="panel panel-default"></div>
         </div>
     </div>
 </div>
